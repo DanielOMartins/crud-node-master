@@ -8,13 +8,14 @@
 </head>
 <body>
     <div class="container"> 
-        <form action="#" method="PUT" data-form> 
+        <form action="/atualizaProduto" method="POST" data-form>
+            <input type="text" data-id name="_id">
             
             <label for="id">ID </label>
             <input type="text" placeholder="ID" name="id" data-nome>
             
             <label for="função">Função </label>
-            <input type="text" placeholder="Função" name="função" placheholder="nome" data-funcao>
+            <input type="text" placeholder="Função" name="funcao" placheholder="nome" data-funcao>
             
             <label for="paciente">Paciente </label>
             <input type="text" placeholder="Paciente" name="paciente" data-paciente>
@@ -29,78 +30,6 @@
         </form>
     </div>
 
-    <script>
-    function getProduto(id){
-        const url = `http://localhost:3000/getProduto?_id=${id}`;
-        const options = {
-            method: 'GET',
-            mode: 'cors',
-            Headers: {
-                'content-type':'application/json;charset=utf-8'
-            }
-        }
-
-        return fetch(url, options).then(
-            resp => resp.json()
-        ).then( data => {
-            console.log(data);
-            return data
-        })
-    }
-
-        async function atualizaProduto(id, nome, funcao, paciente, validade, quantidade){
-            return fetch(`http://localhost:3000/atualizarProduto?_id=${id}`, {
-                method: 'PUT',
-                headers:{
-                    'Content-Type' : 'string'
-                },
-                body: {
-                    id: nome,
-                    funcao: funcao,
-                    paciente: paciente,
-                    validade: validade,
-                    quant: quantidade
-                }.then(resp =>{
-                    if(resp.ok) return resp.json();
-                })
-            })
-        }
-
-        ((async () =>{
-            const pegaURL = new URL(window.location);
-            const id = pegaURL.searchParams.get('id');
-
-            const inputNome = document.querySelector('[data-nome]');
-            const inputFuncao = document.querySelector('[data-funcao]');
-            const inputPaciente = document.querySelector('[data-paciente]');
-            const inputValidade = document.querySelector('[data-validade]');
-            const inputQuantidade = document.querySelector('[data-quantidade]');
-
-            try{
-                const dados = await getProduto(id)
-                console.log(dados[0]);
-
-                inputNome.value = dados[0].id
-                inputFuncao.value = dados[0].função
-                inputPaciente.value = dados[0].paciente
-                inputValidade.value = dados[0].validade
-                inputQuantidade.value = dados[0].quant
-            }catch(e){
-                console.log(e);
-            }
-
-            const formulario = document.querySelector('[data-form]')
-            formulario.addEventListener('submit', async (evento) =>{
-                try{
-                    await atualizaProduto(id, inputNome.value, inputFuncao.value, inputPaciente.value, inputValidade.value, inputQuantidade.value)
-                }catch(e){
-                    console.log(e);
-                }
-            })
-        
-        }))()
-
-
-    </script>
+    <script type="module" src="src/atualizar.js"></script>
 </body>
 </html>
